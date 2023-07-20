@@ -1,35 +1,50 @@
-import java.util.Scanner;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.io.BufferedReader;
+import java.util.StringTokenizer;
 
 public class b2470 {
-    public static void main(String[] args) {
 
-        Scanner sc = new Scanner(System.in);
-        int N = sc.nextInt();
-        long[] arr =  new long[N];
-        int i,j;
-        long sum = 0;
-        long min = Long.MAX_VALUE;
-        int idx1=0,idx2=0;
-        for(i = 0; i<N;i++){
-            arr[i] = sc.nextInt();
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+
+        int n = Integer.parseInt(st.nextToken());
+        int[] arr = new int[n];
+
+        st = new StringTokenizer(br.readLine());
+        for(int i = 0; i < n; i++) {
+            arr[i] = Integer.parseInt(st.nextToken());
         }
-        for(i = 0; i<N;i++){
-            System.out.println(arr[i]);
-        }
-        for(i = 0; i<N;i++){
-            for(j = i+1;j<N;j++){
-                sum = arr[i] + arr[j];
-                if(sum < 0){
-                    sum *=-1;
-                }
-                if(sum<min){
+        Arrays.sort(arr);
+        int start = 0;
+        int end = n-1;
+        int min = Integer.MAX_VALUE;
+
+        /////////////////////////////////////////////////////////////////////////////
+        int ans1=0;
+        int ans2=0;
+        int sum = 0;
+        while(start<end) {
+            sum =Math.abs(arr[end] + arr[start]);
+            if (sum == 0) {
+                ans1 = arr[start];
+                ans2 = arr[end];
+                break;
+            }
+            if (sum < min) {
                     min = sum;
-                    idx1 = i;
-                    idx2 = j;
-                }
+                    ans1 = arr[start];
+                    ans2 = arr[end];
+            }
+            if (arr[end] + arr[start]< 0) {
+                start++;
+            }
+            else {
+                end--;
             }
         }
-        if(arr[idx1]>arr[idx2]) System.out.println(arr[idx2] + " " + arr[idx1]);
-        else System.out.println(arr[idx1] + " " + arr[idx2]);
+        System.out.println(ans1 + " " + ans2);
     }
 }
